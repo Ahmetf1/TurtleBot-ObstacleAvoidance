@@ -45,3 +45,5 @@ target_link_libraries(movements ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 add_executable(follow_person src/follow_person.cpp src/Turtlebot.cpp)
 target_link_libraries(follow_person ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
+add_executable(test_BSF src/test_BSF.cpp src/grid_generator.cpp src/path_planner.cpp src/Turtlebot.cpp)
+target_link_libraries(test_BSF ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})

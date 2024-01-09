@@ -41,10 +41,11 @@ public:
 	TargetFinder() : it_(nh_)
 	{
 		// Subscribe to input video feed and publish detection output
-
 		rgb_image_sub_ = it_.subscribe(color_topic, 1, &TargetFinder::imageCb, this);
 		depth_image_sub_ = it_.subscribe(depth_topic, 1, &TargetFinder::depthCb, this);
 		detection_pub = it_.advertise(detection_result, 1);
+		// Publish target pose
+		target_position_pub = nh_.advertise<geometry_msgs::Point>("target_pose", 10);
 	}
 
 	~TargetFinder()
@@ -127,6 +128,7 @@ public:
 		if (target_found)
 		{
 			float target_distance = cv_ptr->image.at<float>(cv::Point(posX, posY));
+			geometry_msgs::Point target_pose;
 			if (target_distance != 0)
 			{
 				double targetPositionY = target_distance * sin((kinectFovX * ((posX - 320) / 320.0)) * (PI / 180));
@@ -134,6 +136,9 @@ public:
 				ROS_INFO("Depth: %f , targetX: %f, targetY: %f", target_distance, targetPositionX, targetPositionY);
 				target_found = false;
 				// use targetPositionX and targetPositionY to give following targets to the robot.
+				target_pose.x = targetPositionX;
+				target_pose.y = targetPositionY;
+				target_position_pub.publish(target_pose);
 			}
 		}
 	}

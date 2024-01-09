@@ -12,7 +12,7 @@ Summary: Contains constants
 
 #include <math.h>
 #include <turtlebot/Turtlebot.h>
-#include <turtlebot/ApfPlanner.h>
+
 
 namespace Turtlebot {
     namespace constants {
