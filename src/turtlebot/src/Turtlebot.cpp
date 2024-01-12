@@ -47,7 +47,7 @@ namespace Turtlebot {
             return 0;
         }
 
-        double calculated = current_pose.substract(goal).x * pid.P;
+        double calculated = -current_pose.substract(goal).x * pid.P;
         
         if (calculated < constants::max_linear_vel) {
             return calculated;
@@ -63,13 +63,10 @@ namespace Turtlebot {
         double current_orientation = 0;
         double calculated = normalizeAngle(dest_orientation - current_orientation) * pid.P;
 
-        std::cout << "dest: " << dest_orientation << "\n";
-        std::cout << "calc: " << calculated << "\n";
-
         if (std::fabs(calculated) < constants::max_angular_vel) {
-            return calculated;
+            return -calculated;
         } else {
-            return constants::max_angular_vel * copysign(1.0, calculated);
+            return constants::max_angular_vel * copysign(1.0, -calculated);
         }
     }
 

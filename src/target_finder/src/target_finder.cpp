@@ -15,6 +15,7 @@
 #include <iostream>
 #include <vector>
 #include <sys/time.h>
+#include <math.h>
 
 #define PI 3.14159265
 #define MIN_COMPONENT_AREA_THRESHOLD 600 // can be tweaked for better performance
@@ -43,9 +44,9 @@ public:
 		// Subscribe to input video feed and publish detection output
 		rgb_image_sub_ = it_.subscribe(color_topic, 1, &TargetFinder::imageCb, this);
 		depth_image_sub_ = it_.subscribe(depth_topic, 1, &TargetFinder::depthCb, this);
-		detection_pub = it_.advertise(detection_result, 1);
+		// detection_pub = it_.advertise(detection_result, 1);
 		// Publish target pose
-		target_position_pub = nh_.advertise<geometry_msgs::Point>("target_pose", 10);
+		target_position_pub = nh_.advertise<geometry_msgs::Point>(detection_result, 10);
 	}
 
 	~TargetFinder()
@@ -138,7 +139,10 @@ public:
 				// use targetPositionX and targetPositionY to give following targets to the robot.
 				target_pose.x = targetPositionX;
 				target_pose.y = targetPositionY;
-				target_position_pub.publish(target_pose);
+				if (!std::isnan(target_pose.x) || !std::isnan(target_pose.x))
+				{
+					target_position_pub.publish(target_pose);
+				}
 			}
 		}
 	}
