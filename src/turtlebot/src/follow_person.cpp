@@ -33,13 +33,15 @@ int main(int argc, char** argv) {
     plan.emplace_back(target_position.x, target_position.y);
 
     while(true) {
-        reached = turtlebot_controller.follow_plan(plan, current_wp);
-        ros::spinOnce();
-        control_rate.sleep();
         plan.clear();
         current_wp = 0;
         Vector2D wp_position = calculate_wp_position(Vector2D(target_position.x, target_position.y), 0.5);
-        plan.emplace_back(wp_position.x, wp_position.y);
+        if (!std::isnan(wp_position.x) && !std::isnan(wp_position.y)) {
+            plan.emplace_back(wp_position.x, wp_position.y);
+            reached = turtlebot_controller.follow_plan(plan, current_wp);
+        }
+        ros::spinOnce();
+        control_rate.sleep();
     }
 
 
