@@ -1,8 +1,8 @@
 /*
-Date: 19.12.2023
+Date: 13.01.2023
 Developed by: Ahmet Furkan Akıncı
-Project: EE 451 - Project 4
-Summary: Do a plan with APF and move the robot accordingly
+Project: EE 451 - Final Project
+Summary: Follow an object 
 */
 
 #include <turtlebot/Vector2D.h>
@@ -13,7 +13,25 @@ Summary: Do a plan with APF and move the robot accordingly
 #include <geometry_msgs/Point.h>
 
 geometry_msgs::Point target_position;
+
+/*
+Date: 12.01.2023
+Developed by: Ahmet Furkan Akıncı
+Summary: Callback function for updating target position from ROS message.
+Input: ROS message containing the target position (geometry_msgs::Point).
+Output: The global variable 'target_position' is updated with the received position.
+*/
 void target_position_cb(const geometry_msgs::Point::ConstPtr& msg);
+
+/*
+Date: 12.01.2023
+Developed by: Ahmet Furkan Akıncı
+Summary: Calculates the waypoint position based on the target position and a specified follow distance.
+Input: 
+    - target_position: The current target position as a 2D vector.
+    - follow_distance: The distance to maintain from the target position.
+Output: Returns a Vector2D object representing the calculated waypoint position.
+*/
 Vector2D calculate_wp_position(Vector2D target_position, double follow_distance);
 
 int main(int argc, char** argv) {
