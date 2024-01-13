@@ -64,6 +64,19 @@ void checkForNoData(const ros::TimerEvent&) {
     }
 }
 
+bool obstacle_detected = false;
+geometry_msgs::Point obstacle_position;
+
+// Callback function for the obstacle position topic
+void obstacleCallback(const geometry_msgs::Point::ConstPtr& msg) {
+    // Check if the message signifies an obstacle (for example, non-zero coordinates)
+    if (std::isnan(msg->x) || std::isnan(msg->y)) {
+        obstacle_detected = true;
+        obstacle_position = *msg;  // Store the obstacle's position
+    } else {
+        obstacle_detected = false;
+    }
+}
 int main(int argc, char** argv) {
     ros::init(argc, argv, "test_BFS");
     ros::NodeHandle nh;
@@ -71,6 +84,7 @@ int main(int argc, char** argv) {
 
     // Create a subscriber object
     ros::Subscriber target_position_sub = nh.subscribe<geometry_msgs::Point>("/detection_result/blue", 10, targetPoseCallback);
+    ros::Subscriber obstacle_position_sub = nh.subscribe<geometry_msgs::Point>("/detection_result/orange", 10, obstacleCallback);
     ros::Timer noDataTimer = nh.createTimer(ros::Duration(0.1), checkForNoData);
 
     ros::Rate control_rate(40);
@@ -132,9 +146,15 @@ int main(int argc, char** argv) {
         if(counter == 5){
             std::vector<std::pair<double, double>> points;
             points.push_back({target_position.x, target_position.y});
+            if(obstacle_detected){
+                points.push_back({obstacle_position.x, obstacle_position.y});
+            }
             gridGen.adjustGridSizeForCoordinates(points);
+            if(obstacle_detected){
+                gridGen.setObstacle(obstacle_position.x, obstacle_position.y);
+                ROS_INFO("OBSTACLE DETECTED");
+            }
             gridGen.setDestination(target_position.x, target_position.y);
-
             gridGen.printGrid();
             ROS_INFO("Target: %f, %f", target_position.x, target_position.y);
             std::vector<std::pair<double, double>> path = pathGen.findPath_BFS();
