@@ -16,7 +16,7 @@ class GridGenerator {
 public:
     GridGenerator(double resolution);
     void setGridSize(int width, int height);
-    void setObstacle(double x, double y);
+    void setObstacle(double x, double y, double obstacle_radius);
     void setDestination(double x, double y);
 
     void adjustGridSizeForCoordinates(const std::vector<std::pair<double, double>>& points);

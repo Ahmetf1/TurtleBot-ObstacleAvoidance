@@ -115,13 +115,19 @@ std::vector<std::pair<double, double>> PathFinder::findPath_BFS() {
         };
 
         for (const auto& next : neighbors) {
-            double newCost = costSoFar[current.first * grid.width_ + current.second] + movementCost(current, next); // Implement movementCost to favor diagonals
+            // Check if the neighbor is within grid bounds and not an obstacle
+            if (next.first >= 0 && next.first < grid.width_ && 
+                next.second >= 0 && next.second < grid.height_ && 
+                grid.grid_[next.second][next.first] == true) {  // Accessible (not an obstacle)
 
-            if (costSoFar.find(next.first * grid.width_ + next.second) == costSoFar.end() || newCost < costSoFar[next.first * grid.width_ + next.second]) {
-                costSoFar[next.first * grid.width_ + next.second] = newCost;
-                double priority = newCost;
-                pq.push({priority, next});
-                cameFrom[next.first * grid.width_ + next.second] = current;
+                double newCost = costSoFar[current.first * grid.width_ + current.second] + movementCost(current, next); 
+
+                if (costSoFar.find(next.first * grid.width_ + next.second) == costSoFar.end() || newCost < costSoFar[next.first * grid.width_ + next.second]) {
+                    costSoFar[next.first * grid.width_ + next.second] = newCost;
+                    double priority = newCost;
+                    pq.push({priority, next});
+                    cameFrom[next.first * grid.width_ + next.second] = current;
+                }
             }
         }
     }

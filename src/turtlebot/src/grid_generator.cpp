@@ -6,10 +6,23 @@ GridGenerator::GridGenerator(double resolution)
     : resolution_(resolution), width_(0), height_(0) {
 }
 
-void GridGenerator::setObstacle(double x, double y) {
+void GridGenerator::setObstacle(double x, double y, double obstacle_radius) {
     auto [grid_x, grid_y] = toGridCoordinates(x, y);
-    if (grid_x >= 0 && grid_x < width_ && grid_y >= 0 && grid_y < height_) {
-        grid_[grid_y][grid_x] = false;
+    int grid_radius = static_cast<int>(std::ceil(obstacle_radius / resolution_)); // Convert radius to grid cells
+
+    for (int i = -grid_radius; i <= grid_radius; ++i) {
+        for (int j = -grid_radius; j <= grid_radius; ++j) {
+            int cell_x = grid_x + i;
+            int cell_y = grid_y + j;
+
+            // Check if the cell is within the obstacle's radius
+            if (std::sqrt(i * i + j * j) <= grid_radius) {
+                // Check if the cell is within grid bounds
+                if (cell_x >= 0 && cell_x < width_ && cell_y >= 0 && cell_y < height_) {
+                    grid_[cell_y][cell_x] = false;
+                }
+            }
+        }
     }
 }
 
