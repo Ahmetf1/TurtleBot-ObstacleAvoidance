@@ -7,7 +7,9 @@ GridGenerator::GridGenerator(double resolution)
 }
 
 void GridGenerator::setObstacle(double x, double y, double obstacle_radius) {
-    auto [grid_x, grid_y] = toGridCoordinates(x, y);
+    std::pair<int,int>grid_coordinates = toGridCoordinates(x,y);
+    int grid_x = grid_coordinates.first;
+    int grid_y = grid_coordinates.second;
     int grid_radius = static_cast<int>(std::ceil(obstacle_radius / resolution_)); // Convert radius to grid cells
 
     for (int i = -grid_radius; i <= grid_radius; ++i) {
