@@ -55,7 +55,13 @@ bool GridGenerator::isObstacle(int x, int y) const{
 void GridGenerator::printGrid() const {
     for (int y = 0; y < height_; ++y) {
         for (int x = 0; x < width_; ++x) {
-            std::cout << (grid_[y][x] ? '#' : '.');
+            if (x == width_/2 && y == height_/2) {
+                std::cout << 'C';  // Mark current location
+            } else if (x == destination_.first && y == destination_.second) {
+                std::cout << 'D';  // Mark destination
+            } else {
+                std::cout << (grid_[y][x] ? '#' : '.');
+            }
         }
         std::cout << std::endl;
     }

@@ -18,6 +18,10 @@ namespace Turtlebot {
     }
 
     bool Turtlebot::follow_plan(std::vector<Vector2D> plan, int& current_wp) {
+        if(plan[0].x == 0 && plan[0].y == 0){
+            command_velocity_publisher.publish(geometry_msgs::Twist());
+            return true;
+        }
         if (current_wp < plan.size())
         {   
             Vector2D current_pose = Vector2D(0, 0);

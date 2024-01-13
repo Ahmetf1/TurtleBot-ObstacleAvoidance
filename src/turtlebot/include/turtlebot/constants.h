@@ -19,12 +19,12 @@ namespace Turtlebot {
         constexpr double control_rate = 30;
         constexpr double whell_seperation = 0.26;
         constexpr double whell_diameter = 0.072;
-        constexpr double max_linear_vel = 0.2;
+        constexpr double max_linear_vel = 0.3;
         constexpr double min_linear_vel = -1;
         constexpr double max_angular_vel = 0.5;
-        constexpr double min_angular_vel = -1;
-        constexpr double wp_reach_threshold = 0.2;
-        constexpr double max_orientation_diff = 0.2;
+        constexpr double min_angular_vel = -2;
+        constexpr double wp_reach_threshold = 0.1;
+        constexpr double max_orientation_diff = 4;
 
         constexpr double robot_radius = 0.3;
 
