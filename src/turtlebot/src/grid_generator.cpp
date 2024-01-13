@@ -1,6 +1,10 @@
+/*
+Date:13/01/2024
+Developed by: Musa Almaz
+Project: Final Project
+Summary: This source file is for generating the grid for the BSF path finding algorihm.
+*/ 
 #include <turtlebot/grid_generator.h>
-
-
 
 GridGenerator::GridGenerator(double resolution) 
     : resolution_(resolution), width_(0), height_(0) {
