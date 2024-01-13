@@ -145,6 +145,13 @@ public:
 				}
 			}
 		}
+		else {
+			geometry_msgs::Point temp = geometry_msgs::Point();
+			temp.x = std::nan("1");
+			temp.y = std::nan("1");
+			temp.z = std::nan("1");
+			target_position_pub.publish(temp);
+		}
 	}
 };
 
